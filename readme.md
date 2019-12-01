@@ -4,4 +4,4 @@
 
 ***
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/71c48e5b8b657d40732e/maintainability)](https://codeclimate.com/github/oneeyedman/advent-of-code-2018/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/71c48e5b8b657d40732e/maintainability)](https://api.codeclimate.com/v1/badges/cf422222d254fafbf346/maintainability)
