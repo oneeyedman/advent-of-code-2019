@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
+body {
+	background: #222222;
+	color: #c0c0c0;
+	font-family: 'Source Code Pro', monospace;
+	margin: 0;
+	text-align: center;
+}
+
+
+
+
+
+/* PAGE */
+.page {
+	margin: 0 40px;
+}
+.page--home {
+	display: grid;
+	grid-template-rows: 1fr auto;
+	min-height: 100vh;
+}
+.page__content--tree {
+	overflow: hidden;
+	padding: 2em 0;
+}
+
+
+
+
+
+/* HEADER */
+.page__header {
+	padding: 2em 0;
+	position: relative;
+}
+
+.page__title-link {
+	color: #0e9d0c;
+	display: block;
+	font-size: 16px;
+	position: relative;
+	text-decoration: none;
+}
+.page__title-link::before {
+	color: #c0c0c0;
+	content: '---';
+	display: block;
+}
+.page__title-link:hover {
+	color: #aaffaa;
+}
+.page__go-back {
+	color: #0e9d0c;
+	font-size: 16px;
+	left: 0;
+	position: absolute;
+	text-decoration: none;
+	top: 1em;
+}
+.page__go-back:hover {
+	color: #aaffaa;
+}
+.page__go-back::before {
+	content: '<';
+	margin-right: .5em;
+}
+
+
+
+
+
+/* PUZZLES */
+.puzzles {
+	display: grid;
+	font-size: 1.3em;
+	grid-gap: 20px;
+	grid-template-columns: repeat(2, 110px);
+	justify-content: center;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.puzzle {
+	text-align: center;
+}
+.puzzle__link {
+	opacity: .15;
+}
+.puzzle__link::before {
+	content: '[';
+}
+.puzzle__link::after {
+	content: ']';
+}
+a.puzzle__link {
+	color: #0e9d0c;
+	opacity: 1;
+	text-decoration: none;
+}
+a.puzzle__link:hover {
+	color: #aaffaa;
+}
+@media all and (min-width: 768px) {
+	.puzzles {
+		grid-template-columns: repeat(4, 110px);
+	}
+}
+
+@media all and (min-width: 1024px) {
+	.puzzles {
+		grid-template-columns: repeat(5, 110px);
+	}
+}
+
+
+
+
+
+/* DAYS */
+.part + .part {
+	margin-top: 4em;
+}
+.part__title {
+	font-size: 1em;
+}
+.part__title::before,
+.part__title::after {
+	content: '---';
+	padding: 0 1em;
+}
+.part__result {
+	border: 1px solid #c0c0c0;
+	color: #025eea;
+	font-size: 1.5em;
+	margin: 1em auto;
+	padding: .5em;
+	overflow-x: auto;
+	overflow-y:hidden;
+
+}
+@media all and (min-width: 768px) {
+	.part__result {
+		width: 40%;
+	}
+}
+
+
+
+
+/* TREE */
+.aoc {
+	color: #0e9d0c;
+	font-size: .75em;
+	letter-spacing: 1.5px;
+	line-height: 1.4;
+	position: relative;
+	transform: rotate(-90deg) translatey(-10%);
+}
+.aoc::after {
+	bottom: 0;
+	content: 'Advent Of Code';
+	left: 0;
+	margin-bottom: -30px;
+	position: absolute;
+	text-align: center;
+	width: 100%;
+}
+.aoc__yellow {
+	color: #ffff65;
+}
+.aoc__orange {
+	color: #ce7d09;
+}
+.aoc__blue {
+	color: #025eea;
+}
+.aoc__red {
+	color: #d20605;
+}
+.aoc__white {
+	color: #c0c0c0;
+}
+@media all and (min-width: 414px) {
+	.aoc {
+		font-size: 1em;
+	}
+}
+
+
+
+
+
+/* 06 */
+
+.page--6 .area__grid {
+  display: grid;
+  margin: 0 0 2em;
+  padding: 0;
+  list-style: none;
+  justify-content: center;
+}
