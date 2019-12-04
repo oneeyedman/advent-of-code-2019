@@ -6,62 +6,49 @@ const puzzleURL = 'data/data.txt';
 const result1 = document.querySelector('#result-1');
 const result2 = document.querySelector('#result-2');
 let input;
-const programs = [];
+const output = 19690720;
 
 const handleData = data => data.split(',').map(item => parseInt(item));
 
 const restore1202PAS = data => {
   data[1] = 12;
   data[2] = 2;
-  return data;
 };
 
-const getProgram = data => {
-  const workingData = data.slice(0);
-  const program = workingData.slice(0,4);
-  workingData.splice(0,4);
-  const result = {program, workingData};
-  return result;
+const run = instruction => {
+  const [opcode, param1, param2, param3] = instruction;
+  const value1 = input[param1];
+  const value2 = input[param2];
+  let value3 = (opcode === 1) ? value1+value2 : value1*value2;
+  input[param3] = value3;
 };
 
-const splitProgram = data => {
-  if (data[0] !== 99) {
-    const newData = getProgram(data);
-    programs.push(newData.program);
-    splitProgram(newData.workingData);
+const printProgram = codes => {
+  let counter = 0;
+  let size = 4;
+
+  while (codes[counter] !== 99) {
+    const intcode = codes.slice(counter,size);
+    run(intcode);
+    counter += 4;
+    size = counter + 4;
   }
-};
-
-const runIntCode = prog => {
-  const [opcode, pos1, pos2, pos3] = prog;
-  const value1 = input[pos1];
-  const value2 = input[pos2];
-  let value3;
-  if (opcode === 1) {
-    value3 = value1 + value2;
-  } else {
-    value3 = value1 * value2;
-  }
-  input[pos3] = value3;
-};
-
-const run = intCodes => {
-  for (const intCode of intCodes) {
-    runIntCode(intCode);
-  }
-  return input[0];
+  return(input[0]);
 };
 
 
 fetch(puzzleURL)
   .then(res => res.text())
   .then(puzzle => {
+
     input = handleData(puzzle);
     restore1202PAS(input);
-    splitProgram(input);
+    //const originalInput = input.slice(0);
+
+    printProgram(input);
 
     // Part 1
-    result1.innerHTML = run(programs);
+    result1.innerHTML = printProgram(input);
 
     // Part 2
     //result2.innerHTML = calculateTotalRequiredFuel(input);
