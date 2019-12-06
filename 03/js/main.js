@@ -98,7 +98,6 @@ const getCloserWiresCross = data => {
   const setRoute2 = new Set(route2);
   const crossroads = route1.filter(item => setRoute2.has(item)).filter(item => item !== '1,1');
   const distance = getCloserDistance(crossroads);
-  console.log(distance.md);
   return distance.md;
 };
 

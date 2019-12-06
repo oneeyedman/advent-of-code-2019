@@ -137,14 +137,12 @@ a.puzzle__link:hover {
 	padding: .5em;
 	overflow-x: auto;
 	overflow-y:hidden;
-
 }
 @media all and (min-width: 768px) {
-	.part__result {
-		width: 40%;
+  .part__result {
+    width: 40%;
 	}
 }
-
 
 
 
@@ -185,18 +183,4 @@ a.puzzle__link:hover {
 	.aoc {
 		font-size: 1em;
 	}
-}
-
-
-
-
-
-/* 06 */
-
-.page--6 .area__grid {
-  display: grid;
-  margin: 0 0 2em;
-  padding: 0;
-  list-style: none;
-  justify-content: center;
 }
