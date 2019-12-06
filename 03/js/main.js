@@ -1,43 +1,20 @@
 'use strict';
 
-const puzzleURL = 'data/data.txt';
-const visualgrid = document.querySelector('.grid');
+const puzzleURL = 'data/test-data.txt';
 const result1 = document.querySelector('#result-1');
 const result2 = document.querySelector('#result-2');
 let input;
-let position = {
-  x: 1,
-  y: 1
+
+const initialPosition = () => {
+  return {
+    x: 1,
+    y: 1
+  };
 };
 
-const handleData = data => data.split(',').map(item => parseInt(item));
+let position = initialPosition();
 
-const fillBlock = (x,y,char) => {
-  grid[y][x] = char;
-};
-
-const fillGrid = (size, block) => {
-  const cols = [];
-  for (let y=size; y>=0; y--) {
-    const row = [];
-    for (let x=0; x<=size;x++) {
-      row[x] = block;
-    }
-    cols[y] = row;
-  }
-  return cols;
-};
-
-const paintGrid = arr => {
-  const result = arr.slice(0).flat();
-
-  let gridItems = '';
-  for (const r of result) {
-
-    gridItems += `<div class="grid__item ${(r === '·' ? 'grid__item--point':'')}">${r}</div>`;
-  }
-  visualgrid.innerHTML = gridItems;
-};
+const handleData = data => data.split('\n');
 
 const extractNumber = str => {
   let result = str.match(/\d/g);
@@ -53,58 +30,76 @@ const extractMove = str => {
   };
 };
 
-const getChar = (dir,last) => {
-  const chars = {
-    U: '|',
-    D: '|',
-    R: '-',
-    L: '-'
-  };
-  const result = last ? '+': chars[dir];
-  return result;
-}
-
 const makeMove = (arr,dir, amount) => {
-  let increment = 1;
+  const increment = 1;
+  const multiplier = {
+    U: 1,
+    D: -1,
+    R: 1,
+    L: -1
+  };
   for (let i=0; i<amount;i++) {
-    const char = getChar(dir, i===amount-1);
-    if (dir === 'U') {
-      position.y += increment;
-    } else if (dir === 'D') {
-      position.y += -increment;
-    } else if (dir === 'L') {
-      position.x += -increment;
+    if (dir === 'U' || dir === 'D') {
+      position.y += increment * multiplier[dir];
     } else {
-      position.x += increment;
+      position.x += increment * multiplier[dir];
     }
     arr.push(`${position.x},${position.y}`);
-    console.log(`${position.x},${position.y}`);
-    fillBlock(position.x,position.y,char);
   }
 };
 
-
 const tracePath = path => {
+  position = initialPosition();
   const steps = path.split(',');
   const route = [];
   route.push(`${position.x},${position.y}`);
-  console.log(`${position.x},${position.y}`);
 
   for (const step of steps) {
     const move = extractMove(step);
     const {dir, amount} = move;
     makeMove(route,dir,amount);
   }
+  return route;
+};
 
-}
+const manhattanDistance =  (a,b) => {
+  const x = Math.abs(a.x - b.x);
+  const y = Math.abs(a.y - b.y);
+  return x+y;
+};
 
-const grid  = fillGrid(10,'·');
+const addMDistance = coord => {
+  const [x,y] = coord.split(',');
+  return {
+    x: x,
+    y: y,
+    md: manhattanDistance({x:1,y:1},{x:x, y:y})
+  };
+};
 
-fillBlock(1,1,'o');
-tracePath('U7,R6,D4,L4');
+const getCloserItem = (item, acc) => {
+  if (item.md <= acc.md) {
+    return item;
+  } else {
+    return acc;
+  }
+};
 
-paintGrid(grid);
+const getCloserDistance = route => {
+  return route
+    .map(addMDistance)
+    .reduce(getCloserItem);
+};
 
+const getCloserWiresCross = data => {
+  const [path1, path2] = data;
+  const route1 = tracePath(path1);
+  const route2 = tracePath(path2);
+  const crossroads = route1.filter(item => route2.includes(item)).filter(item => item !== '1,1');
+  const distance = getCloserDistance(crossroads);
+  console.log(distance.md);
+  return distance.md;
+};
 
 fetch(puzzleURL)
   .then(res => res.text())
@@ -113,7 +108,7 @@ fetch(puzzleURL)
     input = handleData(puzzle);
 
     // Part 1
-    //result1.innerHTML = ;
+    result1.innerHTML = getCloserWiresCross(input); //1285
 
     // Part 2
     //result2.innerHTML = ;
