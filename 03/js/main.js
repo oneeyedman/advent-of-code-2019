@@ -1,6 +1,6 @@
 'use strict';
 
-const puzzleURL = 'data/test-data.txt';
+const puzzleURL = 'data/data.txt';
 const result1 = document.querySelector('#result-1');
 const result2 = document.querySelector('#result-2');
 let input;
@@ -95,7 +95,8 @@ const getCloserWiresCross = data => {
   const [path1, path2] = data;
   const route1 = tracePath(path1);
   const route2 = tracePath(path2);
-  const crossroads = route1.filter(item => route2.includes(item)).filter(item => item !== '1,1');
+  const setRoute2 = new Set(route2);
+  const crossroads = route1.filter(item => setRoute2.has(item)).filter(item => item !== '1,1');
   const distance = getCloserDistance(crossroads);
   console.log(distance.md);
   return distance.md;
