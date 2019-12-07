@@ -104,22 +104,27 @@ const getCloserWiresCross = data => {
   return distance.md;
 };
 
-const getNumberOfSteps = crosses => {
-  const result = crosses.map(x => {
-    const steps1 = route1.indexOf(x);
-    const steps2 = route2.indexOf(x);
-    return {
-      coord: x,
-      steps: steps1 + steps2
-    };
-  }).reduce((item, acc) => {
-    if (item.steps <= acc.steps) {
-      return item;
-    } else {
-      return acc;
-    }
-  });
+const getCombinedSteps = x => {
+  const steps1 = route1.indexOf(x);
+  const steps2 = route2.indexOf(x);
+  return {
+    coord: x,
+    steps: steps1 + steps2
+  };
+};
 
+const getShorterCross = (item, acc) => {
+  if (item.steps <= acc.steps) {
+    return item;
+  } else {
+    return acc;
+  }
+};
+
+const getNumberOfSteps = crosses => {
+  const result = crosses
+    .map(getCombinedSteps)
+    .reduce(getShorterCross);
   return result.steps;
 };
 
