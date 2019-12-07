@@ -26,15 +26,15 @@ const hasEqualOrAscendingNumbers = number => {
   return result;
 };
 
+const removeDescending = pass => hasEqualOrAscendingNumbers(pass);
+
+const removeUniques = pass => pass.toString().length !== pass.toString().match(/([0-9])(?!.*\1)/gi).length;
+
 const getMeetingCriteriaPasswords = data => {
-  const inputWithDuplicatesOnly = input.filter(pass => pass.toString().length !== pass.toString().match(/([0-9])(?!.*\1)/gi).length);
-
-
-
-    const noDescendingNumbers = inputWithDuplicatesOnly.filter(pass => hasEqualOrAscendingNumbers(pass));
-
-    console.log(noDescendingNumbers.length, noDescendingNumbers);
-    return noDescendingNumbers.length;
+  const result = data
+    .filter(removeUniques)
+    .filter(removeDescending);
+  return result.length;
 };
 
 
