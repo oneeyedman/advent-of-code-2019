@@ -34,7 +34,28 @@ const getMeetingCriteriaPasswords = data => {
   const result = data
     .filter(removeUniques)
     .filter(removeDescending);
-  return result.length;
+  return result;
+};
+
+const getPasswordWithPairs = data => {
+  console.log(data);
+  const result = data
+    .map(pass => {
+      return {
+        pass: pass,
+        layout: _.groupBy(pass.toString().split(''))
+      };
+    })
+    .filter(item => {
+      let hasDuplicates = false;
+      for (const key in item.layout) {
+        if (item.layout[key].length === 2) {
+          hasDuplicates = true;
+        }
+      }
+      return hasDuplicates;
+    });
+  return result;
 };
 
 
@@ -46,10 +67,11 @@ fetch(puzzleURL)
 
 
     // Part 1
-    result1.innerHTML = getMeetingCriteriaPasswords(input);
-
+    const batch1 = getMeetingCriteriaPasswords(input);
+    result1.innerHTML = batch1.length;
 
     // Part 2
-    //result2.innerHTML =
+    const batch2 = getPasswordWithPairs(batch1);
+    result2.innerHTML = batch2.length
 
   });
