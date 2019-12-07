@@ -4,6 +4,9 @@ const puzzleURL = 'data/data.txt';
 const result1 = document.querySelector('#result-1');
 const result2 = document.querySelector('#result-2');
 let input;
+let route1;
+let route2;
+let crossroads;
 
 const initialPosition = () => {
   return {
@@ -93,12 +96,31 @@ const getCloserDistance = route => {
 
 const getCloserWiresCross = data => {
   const [path1, path2] = data;
-  const route1 = tracePath(path1);
-  const route2 = tracePath(path2);
+  route1 = tracePath(path1);
+  route2 = tracePath(path2);
   const setRoute2 = new Set(route2);
-  const crossroads = route1.filter(item => setRoute2.has(item)).filter(item => item !== '1,1');
+  crossroads = route1.filter(item => setRoute2.has(item)).filter(item => item !== '1,1');
   const distance = getCloserDistance(crossroads);
   return distance.md;
+};
+
+const getNumberOfSteps = crosses => {
+  const result = crosses.map(x => {
+    const steps1 = route1.indexOf(x);
+    const steps2 = route2.indexOf(x);
+    return {
+      coord: x,
+      steps: steps1 + steps2
+    };
+  }).reduce((item, acc) => {
+    if (item.steps <= acc.steps) {
+      return item;
+    } else {
+      return acc;
+    }
+  });
+
+  return result.steps;
 };
 
 fetch(puzzleURL)
@@ -110,7 +132,8 @@ fetch(puzzleURL)
     // Part 1
     result1.innerHTML = getCloserWiresCross(input); //1285
 
+
     // Part 2
-    //result2.innerHTML = ;
+    result2.innerHTML = getNumberOfSteps(crossroads);
 
   });
