@@ -37,24 +37,27 @@ const getMeetingCriteriaPasswords = data => {
   return result;
 };
 
+const groupPasswords = pass => {
+  return {
+    pass: pass,
+    layout: _.groupBy(pass.toString().split(''))
+  };
+};
+
+const passwordsWithAPair = item => {
+  let hasDuplicates = false;
+  for (const key in item.layout) {
+    if (item.layout[key].length === 2) {
+      hasDuplicates = true;
+    }
+  }
+  return hasDuplicates;
+};
+
 const getPasswordWithPairs = data => {
-  console.log(data);
   const result = data
-    .map(pass => {
-      return {
-        pass: pass,
-        layout: _.groupBy(pass.toString().split(''))
-      };
-    })
-    .filter(item => {
-      let hasDuplicates = false;
-      for (const key in item.layout) {
-        if (item.layout[key].length === 2) {
-          hasDuplicates = true;
-        }
-      }
-      return hasDuplicates;
-    });
+    .map(groupPasswords)
+    .filter(passwordsWithAPair);
   return result;
 };
 
@@ -72,6 +75,6 @@ fetch(puzzleURL)
 
     // Part 2
     const batch2 = getPasswordWithPairs(batch1);
-    result2.innerHTML = batch2.length
+    result2.innerHTML = batch2.length;
 
   });
